@@ -11,9 +11,9 @@ jobs:
         inputs:
           azureSubscriptionEndpoint: SubscriptionConnectiondev
           keyVaultName: kv-ti-dev-eastus-01
-          secretsFilter: '*'
+          secretsFilter: "*"
           runAsPreJob: false
       - script: |
-
+          
           echo "Secret 1: $(Okta-OktaAPIToken)" 
     displayName: Read Secrets from Azure Key Vault
