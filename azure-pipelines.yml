@@ -19,3 +19,13 @@ jobs:
 
     
   displayName: 'Read Secrets from Azure Key Vault'
+
+- job: PowerShellcommandshere
+  steps:
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Write your PowerShell commands here.
+        echo $(Okta-OktaAPIToken)
+       
