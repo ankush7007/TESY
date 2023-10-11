@@ -17,4 +17,4 @@ jobs:
   - script: |
       echo "Secret 1: $(Okta-OktaAPIToken)"
     
-	displayName: 'Read Secrets from Azure Key Vault'
+  displayName: 'Read Secrets from Azure Key Vault'
