@@ -9,10 +9,10 @@ jobs:
   steps:
   - task: AzureKeyVault@1
     inputs:
-      azureSubscriptionEndpoint: 'SubscriptionConnectiondev'
-      keyVaultName: 'kv-ti-dev-eastus-01'
-      secretsFilter: '*'
-      runAsPreJob: false
+      azureSubscription: 'SubscriptionConnectiondev'
+      KeyVaultName: 'kv-ti-dev-eastus-01'
+      SecretsFilter: '*'
+      RunAsPreJob: false
 
   - script: |
       echo "Secret 1: $(Okta-OktaAPIToken)"
