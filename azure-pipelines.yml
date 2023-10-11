@@ -1,19 +1,19 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
-
+  - main
+prerequisites:
+  - azureKeyVault: SubscriptionConnectiondev
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
+jobs:
+  - job: ReadKeyVaultSecrets
+    steps:
+      - task: AzureKeyVault@1
+        inputs:
+          azureSubscriptionEndpoint: SubscriptionConnectiondev
+          keyVaultName: kv-ti-dev-eastus-01
+          secretsFilter: '*'
+          runAsPreJob: false
+      - script: |
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+          echo "Secret 1: $(Okta-OktaAPIToken)" 
+    displayName: Read Secrets from Azure Key Vault
