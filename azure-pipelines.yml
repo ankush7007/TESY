@@ -1,17 +1,20 @@
 trigger:
-  - main
+- main
+
 pool:
-  vmImage: windows-latest
+  vmImage: 'windows-latest'
+
 jobs:
-  - job: ReadKeyVaultSecrets
-    steps:
-      - task: AzureKeyVault@1
-        inputs:
-          azureSubscriptionEndpoint: SubscriptionConnectiondev
-          keyVaultName: kv-ti-dev-eastus-01
-          secretsFilter: "*"
-          runAsPreJob: false
-      - script: |
-          
-          echo "Secret 1: $(Okta-OktaAPIToken)" 
-    displayName: Read Secrets from Azure Key Vault
+- job: ReadKeyVaultSecrets
+  steps:
+  - task: AzureKeyVault@1
+    inputs:
+      azureSubscriptionEndpoint: 'SubscriptionConnectiondev'
+      keyVaultName: 'kv-ti-dev-eastus-01'
+      secretsFilter: '*'
+      runAsPreJob: false
+
+  - script: |
+      echo "Secret 1: $(Okta-OktaAPIToken)"
+    
+	displayName: 'Read Secrets from Azure Key Vault'
