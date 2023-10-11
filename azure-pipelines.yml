@@ -18,3 +18,10 @@ jobs:
       echo "Secret 1: $(Okta-OktaAPIToken)"
     
   displayName: 'Read Secrets from Azure Key Vault'
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      Write-Host "$(Okta-OktaAPIToken)"
