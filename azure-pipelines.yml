@@ -1,7 +1,5 @@
 trigger:
   - main
-prerequisites:
-  - azureKeyVault: SubscriptionConnectiondev
 pool:
   vmImage: windows-latest
 jobs:
