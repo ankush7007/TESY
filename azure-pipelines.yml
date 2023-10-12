@@ -4,13 +4,11 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-parameters:
-  - Name: virtualMachineNames
-    Type: object
-    Default: ['vm1','vm2']
-  - Name: diskNames
-    Type: object
-    Default: ['vm1Disk1','vm1Disk2','vm2Disk1']
+variables:
+- name: myArrayVariable
+  value:
+    - name: 'Object1'
+      value: 'Value 1'
 jobs:
 - job: ReadKeyVaultSecrets
   steps:
