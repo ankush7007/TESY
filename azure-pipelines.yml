@@ -1,16 +1,12 @@
 parameters:
-- name: myArray
+- name: listOfFruits
   type: object
   default:
-    - name: "Object 1"
-      value: "Value 1"
-jobs:
-- job: MyJob
-  steps:
-  - script: |
-      echo "Traversing the array of objects"
-      for item in ${{ parameters.myArray[0] }};
-      do
-        echo "item"
-      done
-    displayName: 'Traverse Array'
+  - fruitName: 'apple'
+    colors: ['red','green']
+  - fruitName: 'lemon'
+    colors: ['yellow']
+steps:
+- ${{ each fruit in parameters.listOfFruits }} :
+  - ${{ each fruitColor in fruit.colors}} :
+    - script: echo ${{ fruit.fruitName}} ${{ fruitColor }}
