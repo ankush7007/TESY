@@ -20,8 +20,14 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        # Write your PowerShell commands here.
-        echo $(Okta-OktaAPIToken)    
+        $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+        $headers.Add("Accept", "application/json")
+        $headers.Add("Content-Type", "application/json")
+        $headers.Add("Authorization", "SSWS 00mAl2x4ZII125DApXT7cqLkqCUloiiF-xlrxnkbJQ")
+        $response = Invoke-RestMethod '
+        https://dev-23261182.okta.com/api/v1/users?limit=1'
+        -Method 'GET' -Headers $headers
+        $response | ConvertTo-Json
 
   - script: |
       echo "Secret 1: $(Okta-OktaAPIToken)"
