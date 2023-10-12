@@ -9,7 +9,7 @@ jobs:
   steps:
   - script: |
       echo "Traversing the array of objects"
-      for item in ${{ parameters.myArray }};
+      for item in ${{ parameters.myArray[0] }};
       do
         echo "item"
       done
