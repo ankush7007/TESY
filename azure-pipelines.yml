@@ -4,6 +4,13 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+parameters:
+  - Name: virtualMachineNames
+    Type: object
+    Default: ['vm1','vm2']
+  - Name: diskNames
+    Type: object
+    Default: ['vm1Disk1','vm1Disk2','vm2Disk1']
 jobs:
 - job: ReadKeyVaultSecrets
   steps:
