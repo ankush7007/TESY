@@ -15,8 +15,8 @@ jobs:
       echo "Traversing the array of objects"
       for item in ${{ parameters.myArray }};
       do
-        name=$(echo $item | jq -r '.name')
-        value=$(echo $item | jq -r '.value')
+        name=$(echo $item |  jq -c '.name')
+        value=$(echo $item | jq -c '.value')
         echo "Name: $name, Value: $value"
       done
     displayName: 'Traverse Array'
