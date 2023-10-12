@@ -17,9 +17,8 @@ parameters:
         KeyName2: OktaDomain
 stages:
 - stage: __default
-  jobs:
   - ${{ each parent in parameters.listOfEnv }} :
-
+  jobs:
   - job: ReadKeyVaultSecrets
     steps:
     - task: AzureKeyVault@1
