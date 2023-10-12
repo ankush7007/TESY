@@ -34,7 +34,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                ForEach ($record in parent.Projects) {
+                ForEach ($record in $parent.Projects) {
                         echo $record
                       }
-                  }
+                  
