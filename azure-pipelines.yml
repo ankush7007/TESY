@@ -16,8 +16,8 @@ parameters:
         KeyName: Okta-OktaAPIToken
         KeyName2: OktaDomain
 stages:
+- ${{each parent in parameters.listOfEnv}} :
 - stage: __default
-  - ${{each parent in parameters.listOfEnv}} :
   jobs:
   - job: ReadKeyVaultSecrets
     steps:
