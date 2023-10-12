@@ -38,7 +38,6 @@ stages:
                $headers.Add("Accept", "application/json")
                $headers.Add("Content-Type", "application/json")
                $headers.Add("Authorization", "SSWS $(${{project.KeyName}})") 
-               echo "SSWS $(${{project.ProjectName}})"
                $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
                $response | ConvertTo-Json
           
