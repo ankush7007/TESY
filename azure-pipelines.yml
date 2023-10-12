@@ -32,9 +32,11 @@ stages:
           - task: PowerShell@2
             displayName: 'Powershell script'
             inputs:
-              targetType: 'inline'
-              script: |
-                ForEach ($record in $parent.Projects) {
-                        echo $record
-                      }
-                  
+             targetType: 'inline'
+             script: |
+               $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+               $headers.Add("Accept", "application/json")
+               $headers.Add("Content-Type", "application/json")
+               $headers.Add("Authorization", "SSWS $(${{project.KeyName}})") 
+               $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
+               $response | ConvertTo-Json
