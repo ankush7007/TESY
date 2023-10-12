@@ -37,9 +37,8 @@ stages:
           $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
           $headers.Add("Accept", "application/json")
           $headers.Add("Content-Type", "application/json")
-          $headers.Add("Authorization", "SSWS $(project.KeyName)")
-          echo "SSWS $(Okta-OktaAPIToken)"
-
+          $headers.Add("Authorization", "SSWS ${{ project.KeyName }}") 
+          echo "SSWS ${{ project.KeyName }}"
           $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
           $response | ConvertTo-Json
     - task: CmdLine@2
