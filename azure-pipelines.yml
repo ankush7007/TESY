@@ -1,43 +1,22 @@
-trigger:
-- main
-
-pool:
-  vmImage: 'windows-latest'
-
-variables:
-- name: myArrayVariable
-  value:
-    - name: 'Object1'
-      value: 'Value 1'
+parameters:
+- name: myArray
+  type: object
+  default:
+    - name: Object 1
+      value: Value 1
+    - name: Object 2
+      value: Value 2
+    - name: Object 3
+      value: Value 3
 jobs:
-- job: ReadKeyVaultSecrets
+- job: MyJob
   steps:
-  - task: AzureKeyVault@1
-    displayName: 'Read Secrets from Azure Key Vault'
-    inputs:
-      azureSubscription: 'SubscriptionConnectiondev'
-      KeyVaultName: 'kv-ti-dev-eastus-01'
-      SecretsFilter: '*'
-      RunAsPreJob: false
-      
-  - task: PowerShell@2
-    displayName: 'Powershell script'
-    inputs:
-      targetType: 'inline'
-      script: |
-        $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-        $headers.Add("Accept", "application/json")
-        $headers.Add("Content-Type", "application/json")
-        $headers.Add("Authorization", "SSWS $(Okta-OktaAPIToken)")
-        echo "SSWS $(Okta-OktaAPIToken)"
-        
-        $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
-        $response | ConvertTo-Json
-
   - script: |
-      echo "Secret 1: $(Okta-OktaAPIToken)"
-
-    
-  
-
-       
+      echo "Traversing the array of objects"
+      for item in ${{ parameters.myArray }};
+      do
+        name=$(echo $item | jq -r '.name')
+        value=$(echo $item | jq -r '.value')
+        echo "Name: $name, Value: $value"
+      done
+    displayName: 'Traverse Array'
