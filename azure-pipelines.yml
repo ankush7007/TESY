@@ -26,7 +26,7 @@ jobs:
         $headers.Add("Authorization", "SSWS $(Okta-OktaAPIToken)")
         echo "SSWS $(Okta-OktaAPIToken)"
         
-        $response = Invoke-RestMethod 'https://dev-92837008.okta.com/api/v1/users?limit=1' -Method 'GET' -Headers $headers
+        $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
         $response | ConvertTo-Json
 
   - script: |
