@@ -25,14 +25,17 @@ stages:
   - job: ReadKeyVaultSecrets
     steps:
     - ${{ each parent in parameters.listOfEnv }} :
-      - ${{ each project in parent.Projects}}  :
           - task: AzureKeyVault@1
             displayName: 'Read Secrets from Azure Key Vault  ${{ parent.Environment}}'
             inputs:
              azureSubscription: ${{ parent.AzureSubServiceConName}}
              KeyVaultName:  ${{ parent.KeyVaultName}}
              SecretsFilter: '*'
-             RunAsPreJob: false
+             RunAsPreJob: false        
+  - job: Poershell
+    steps:
+    - ${{ each parent in parameters.listOfEnv }} :
+      - ${{ each project in parent.Projects}}  :
           - task: CmdLine@2
             inputs:
              script: "echo Secret 1: SSWS $(${{project.ProjectName}})"
@@ -47,5 +50,5 @@ stages:
                $headers.Add("Authorization", "SSWS  $(${{project.KeyName}})") 
                echo "SSWS $(Okta-OktaAPIToken)"
                $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
-               $response | ConvertTo-Json
+               $response | ConvertTo-Json             
           
