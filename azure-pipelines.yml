@@ -23,9 +23,8 @@ jobs:
         $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
         $headers.Add("Accept", "application/json")
         $headers.Add("Content-Type", "application/json")
-        $headers.Add("Authorization", "SSWS 00mAl2x4ZII125DApXT7cqLkqCUloiiF-xlrxnkbJQ")
-        $response = Invoke-RestMethod '
-        https://dev-23261182.okta.com/api/v1/users?limit=1'
+        $headers.Add("Authorization", "SSWS 00rfL9IAS5yF6km0nY1xPHEbSkRKk4a3S5IhmPoO9r")
+        $response = Invoke-RestMethod 'https://dev-23261182.okta.com/api/v1/users?limit=1'
         -Method 'GET' -Headers $headers
         $response | ConvertTo-Json
 
