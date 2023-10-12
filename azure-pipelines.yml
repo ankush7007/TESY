@@ -8,24 +8,25 @@ jobs:
 - job: ReadKeyVaultSecrets
   steps:
   - task: AzureKeyVault@1
+    displayName: 'Read Secrets from Azure Key Vault'
     inputs:
       azureSubscription: 'SubscriptionConnectiondev'
       KeyVaultName: 'kv-ti-dev-eastus-01'
       SecretsFilter: '*'
       RunAsPreJob: false
+      
+  - task: PowerShell@2
+    displayName: 'Powersheel script'
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Write your PowerShell commands here.
+        echo $(Okta-OktaAPIToken)    
 
   - script: |
       echo "Secret 1: $(Okta-OktaAPIToken)"
 
     
-  displayName: 'Read Secrets from Azure Key Vault'
+  
 
-- job: PowerShellcommandshere
-  steps:
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        # Write your PowerShell commands here.
-        echo $(Okta-OktaAPIToken)
        
