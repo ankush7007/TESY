@@ -33,6 +33,7 @@ stages:
              SecretsFilter: '*'
              RunAsPreJob: false        
   - job: Poershell
+    dependsOn: ReadKeyVaultSecrets
     steps:
     - ${{ each parent in parameters.listOfEnv }} :
       - ${{ each project in parent.Projects}}  :
