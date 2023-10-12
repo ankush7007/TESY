@@ -29,20 +29,18 @@ stages:
              KeyVaultName:  ${{ parent.KeyVaultName}}
              SecretsFilter: '*'
              RunAsPreJob: false
-    - task: PowerShell@2
-      displayName: 'Powershell script'
-      inputs:
-        targetType: 'inline'
-        script: |
-          $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-          $headers.Add("Accept", "application/json")
-          $headers.Add("Content-Type", "application/json")
-          $headers.Add("Authorization", "SSWS $(Okta-OktaAPIToken)") 
-          echo "SSWS $(Okta-OktaAPIToken)"
-          $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
-          $response | ConvertTo-Json
-    - task: CmdLine@2
-      inputs:
-        script: "echo Secret 1: $(Okta-OktaAPIToken)"
-    
-
+          - task: PowerShell@2
+            displayName: 'Powershell script'
+            inputs:
+             targetType: 'inline'
+             script: |
+               $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+               $headers.Add("Accept", "application/json")
+               $headers.Add("Content-Type", "application/json")
+               $headers.Add("Authorization", "SSWS $(Okta-OktaAPIToken)") 
+               echo "SSWS $(Okta-OktaAPIToken)"
+               $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
+               $response | ConvertTo-Json
+          - task: CmdLine@2
+            inputs:
+             script: "echo Secret 1: ${{ project.KeyName}}"
