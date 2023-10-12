@@ -1,28 +1,47 @@
+trigger:
+  branches:
+    include:
+    - main
+pool:
+  vmImage: 'windows-latest'
 parameters:
 - name: listOfEnv
   type: object
   default:
   - Environment: Dev
-    AzureSubServiceConName: ssd
-    KeyVaultName: kvdev
+    AzureSubServiceConName: SubscriptionConnectiondev
+    KeyVaultName: kv-ti-dev-eastus-01
     Projects:
       - ProjectName: X3Lostdev1
-        KeyName: X3Lost_Okta_Domain
-        KeyName2: X3Lost_OKTAAPIToken
-      - ProjectName: X3Lost2dev2
-        KeyName: X3Lost_Okta_Domain2
-        KeyName2: X3Lost_OKTAAPIToken2
-  - Environment: QA
-    AzureSubServiceConName: ssd
-    KeyVaultName: kvdev2
-    Projects:
-      - ProjectName: X3Lostqa
-        KeyName: X3Lost_Okta_Domain
-        KeyName2: X3Lost_OKTAAPIToke2n
-      - ProjectName: X3Lostqa2
-        KeyName: X3Lost_Okta_Domain
-        KeyName2: X3Lost_OKTAAPIToken2
-steps:
-- ${{ each parent in parameters.listOfEnv }} :
-  - ${{ each project in parent.Projects}} :
-    - script: echo ${{ parent.Environment}} ${{ project.ProjectName }}
+        KeyName: Okta-OktaAPIToken
+        KeyName2: OktaDomain
+stages:
+- stage: __default
+  jobs:
+  - ${{ each parent in parameters.listOfEnv }} :
+  - job: ReadKeyVaultSecrets
+    steps:
+      - ${{ each project in parent.Projects}} :
+    - task: AzureKeyVault@1
+      displayName: 'Read Secrets from Azure Key Vault'
+      inputs:
+        azureSubscription: ${{ parent.AzureSubServiceConName}}
+        KeyVaultName:  ${{ parent.KeyVaultName}}
+        SecretsFilter: '*'
+        RunAsPreJob: false
+    - task: PowerShell@2
+      displayName: 'Powershell script'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+          $headers.Add("Accept", "application/json")
+          $headers.Add("Content-Type", "application/json")
+          $headers.Add("Authorization", "SSWS $(project.KeyName)")
+          echo "SSWS $(Okta-OktaAPIToken)"
+
+          $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
+          $response | ConvertTo-Json
+    - task: CmdLine@2
+      inputs:
+        script: "echo Secret 1: $(Okta-OktaAPIToken)"
