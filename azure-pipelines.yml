@@ -16,14 +16,15 @@ jobs:
       RunAsPreJob: false
       
   - task: PowerShell@2
-    displayName: 'Powersheel script'
+    displayName: 'Powershell script'
     inputs:
       targetType: 'inline'
       script: |
         $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
         $headers.Add("Accept", "application/json")
         $headers.Add("Content-Type", "application/json")
-        $headers.Add("Authorization", "SSWS 00rfL9IAS5yF6km0nY1xPHEbSkRKk4a3S5IhmPoO9r")
+        $headers.Add("Authorization", "SSWS $(Okta-OktaAPIToken)")
+        echo "SSWS $(Okta-OktaAPIToken)"
         
         $response = Invoke-RestMethod 'https://dev-92837008.okta.com/api/v1/users?limit=1' -Method 'GET' -Headers $headers
         $response | ConvertTo-Json
