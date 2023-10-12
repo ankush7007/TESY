@@ -1,12 +1,28 @@
 parameters:
-- name: listOfFruits
+- name: listOfEnv
   type: object
   default:
-  - fruitName: 'apple'
-    colors: ['red','green']
-  - fruitName: 'lemon'
-    colors: ['yellow']
+  - Environment: Dev
+    AzureSubServiceConName: ssd
+    KeyVaultName: kvdev
+    Projects:
+      - ProjectName: X3Lostdev1
+        KeyName: X3Lost_Okta_Domain
+        KeyName2: X3Lost_OKTAAPIToken
+      - ProjectName: X3Lost2dev2
+        KeyName: X3Lost_Okta_Domain2
+        KeyName2: X3Lost_OKTAAPIToken2
+  - Environment: QA
+    AzureSubServiceConName: ssd
+    KeyVaultName: kvdev2
+    Projects:
+      - ProjectName: X3Lostqa
+        KeyName: X3Lost_Okta_Domain
+        KeyName2: X3Lost_OKTAAPIToke2n
+      - ProjectName: X3Lostqa2
+        KeyName: X3Lost_Okta_Domain
+        KeyName2: X3Lost_OKTAAPIToken2
 steps:
-- ${{ each fruit in parameters.listOfFruits }} :
-  - ${{ each fruitColor in fruit.colors}} :
-    - script: echo ${{ fruit.fruitName}} ${{ fruitColor }}
+- ${{ each parent in parameters.listOfEnv }} :
+  - ${{ each project in parent.Projects}} :
+    - script: echo ${{ parent.Environment}} ${{ project.ProjectName }}
