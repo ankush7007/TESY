@@ -31,7 +31,7 @@ stages:
              RunAsPreJob: false
           - task: CmdLine@2
             inputs:
-             script: "echo Secret 1: SSWS $(${{project.KeyNam}})"
+             script: "echo Secret 1: SSWS $(${{project.KeyName}})"
           - task: PowerShell@2
             displayName: 'Powershell script'
             inputs:
