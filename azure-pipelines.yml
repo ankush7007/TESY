@@ -15,6 +15,9 @@ parameters:
       - ProjectName: SSO
         KeyName: Okta-OktaAPIToken
         KeyName2: OktaDomain
+      - ProjectName: SSO
+        KeyName: Okta-OktaAPIToken
+        KeyName2: OktaDomain  
 stages:
 - stage: default
   jobs:
