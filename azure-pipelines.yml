@@ -15,8 +15,12 @@ parameters:
       - ProjectName: SSO
         KeyName: Okta-OktaAPIToken
         KeyName2: OktaDomain
-      - ProjectName: cc
-        KeyName: Okta-OktaAPIToken
+  - Environment: QA
+    AzureSubServiceConName: SubscriptionConnectiondev
+    KeyVaultName: AzurePipeline-kv
+    Projects:
+      - ProjectName: PdfReporting
+        KeyName: OktaToken 
         KeyName2: OktaDomain  
 stages:
 - stage: default
@@ -41,5 +45,6 @@ stages:
                  $headers.Add("Accept", "application/json")
                  $headers.Add("Content-Type", "application/json")
                  $headers.Add("Authorization", "SSWS $(${{project.KeyName}})") 
-                 $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
+                 $response = Invoke-RestMethod '$$(${{project.KeyName2}})/api/v1/users?limit=1' -Method 'GET' -Headers $headers
                  $response | ConvertTo-Json
+                 
