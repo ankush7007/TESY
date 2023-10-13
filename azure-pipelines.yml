@@ -12,7 +12,7 @@ parameters:
     AzureSubServiceConName: SubscriptionConnectiondev
     KeyVaultName: kv-ti-dev-eastus-01
     Projects:
-      - ProjectName: X3Lostdev1
+      - ProjectName: SSO
         KeyName: Okta-OktaAPIToken
         KeyName2: OktaDomain
 stages:
@@ -21,7 +21,6 @@ stages:
   - job: ReadKeyVaultSecrets
     steps:
     - ${{ each parent in parameters.listOfEnv }} :
-      - ${{ each project in parent.Projects}}  :
           - task: AzureKeyVault@1
             displayName: 'Read Secrets from Azure Key Vault  ${{ parent.AzureSubServiceConName}}'
             inputs:
@@ -29,14 +28,15 @@ stages:
              KeyVaultName:  ${{ parent.KeyVaultName}}
              SecretsFilter: '*'
              RunAsPreJob: false
-          - task: PowerShell@2
-            displayName: 'Powershell script'
-            inputs:
-             targetType: 'inline'
-             script: |
-               $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-               $headers.Add("Accept", "application/json")
-               $headers.Add("Content-Type", "application/json")
-               $headers.Add("Authorization", "SSWS $(${{project.KeyName}})") 
-               $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
-               $response | ConvertTo-Json
+          - ${{ each project in parent.Projects}}  :
+            - task: PowerShell@2
+              displayName: 'Powershell script'
+              inputs:
+               targetType: 'inline'
+               script: |
+                 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+                 $headers.Add("Accept", "application/json")
+                 $headers.Add("Content-Type", "application/json")
+                 $headers.Add("Authorization", "SSWS $(${{project.KeyName}})") 
+                 $response = Invoke-RestMethod '$(OktaDomain)/api/v1/users?limit=1' -Method 'GET' -Headers $headers
+                 $response | ConvertTo-Json
