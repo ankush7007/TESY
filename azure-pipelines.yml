@@ -15,7 +15,7 @@ parameters:
       - ProjectName: SSO
         KeyName: Okta-OktaAPIToken
         KeyName2: OktaDomain
-      - ProjectName: SSO
+      - ProjectName: cc
         KeyName: Okta-OktaAPIToken
         KeyName2: OktaDomain  
 stages:
