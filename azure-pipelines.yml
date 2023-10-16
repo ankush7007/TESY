@@ -4,6 +4,9 @@ trigger:
     - main
 pool:
   vmImage: 'windows-latest'
+variables:
+ - name: domain
+   value: https://dev-92837008.okta.com
 parameters:
 - name: listOfEnv
   type: object
@@ -14,14 +17,14 @@ parameters:
     Projects:
       - ProjectName: SSO
         KeyName: Okta-OktaAPIToken
-        KeyName2: OktaDomain
+        KeyName2: $(domain)
   - Environment: QA
     AzureSubServiceConName: SubscriptionConnectiondev
     KeyVaultName: AzurePipeline-kv
     Projects:
       - ProjectName: PdfReporting
         KeyName: OktaToken 
-        KeyName2: OktaDomain  
+        KeyName2: $(domain)  
 stages:
 - stage: default
   jobs:
