@@ -11,13 +11,6 @@ parameters:
 - name: listOfEnv
   type: object
   default:
-  - Environment: Dev
-    AzureSubServiceConName: SubscriptionConnectiondev
-    KeyVaultName: kv-ti-dev-eastus-01
-    Projects:
-      - ProjectName: SSO
-        KeyName: Okta-OktaAPIToken
-        KeyName2: $(domain)
   - Environment: QA
     AzureSubServiceConName: SubscriptionConnectiondev
     KeyVaultName: AzurePipeline-kv
