@@ -21,9 +21,9 @@ parameters:
 stages:
 - stage: default
   jobs:
-  - job: ReadKeyVaultSecrets
-    steps:
-    - ${{ each parent in parameters.listOfEnv }} :
+  - ${{ each parent in parameters.listOfEnv }} : 
+    - job: ReadKeyVaultSecrets
+      steps:
           - task: AzureKeyVault@1
             displayName: 'Read Secrets from Azure Key Vault  ${{ parent.AzureSubServiceConName}}'
             inputs:
