@@ -2,8 +2,6 @@ trigger:
   branches:
     include:
     - main
-pool:
-  vmImage: 'windows-latest'
 variables:
  - name: domain
    value: https://dev-92837008.okta.com
@@ -12,6 +10,7 @@ parameters:
   type: object
   default:
   - Environment: QA
+    Agentpoolname: windows-latest
     AzureSubServiceConName: SubscriptionConnectiondev
     KeyVaultName: AzurePipeline-kv
     Projects:
@@ -23,7 +22,9 @@ stages:
   jobs:
   - ${{ each parent in parameters.listOfEnv }} : 
     - job: ReadKeyVaultSecrets
-      steps:
+      pool:
+       vmImage: ${{ parent.Agentpoolname}}
+       steps:
           - task: AzureKeyVault@1
             displayName: 'Read Secrets from Azure Key Vault  ${{ parent.AzureSubServiceConName}}'
             inputs:
